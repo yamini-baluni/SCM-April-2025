@@ -437,25 +437,36 @@
     document.getElementById('viewForm').onsubmit = async function(e) {
       e.preventDefault();
       const patientId = e.target.patientId.value;
-      const res = await fetch('/api/doctor/reports/' + encodeURIComponent(patientId));
-      const data = await res.json();
-      
-      let html = '<h3>Reports for Patient ' + patientId + '</h3>';
-      if (data.length === 0) {
-        html += '<div class="report-item"><p>No reports found for this patient.</p></div>';
-      } else {
-        html += '<ul class="report-list">';
-        data.forEach(r => {
-          html += `<li class="report-item">
-            <h4>${r.reportType}</h4>
-            <p><strong>Content:</strong> ${r.reportContent}</p>
-            <p><strong>Doctor ID:</strong> ${r.doctorId}</p>
-            <p><strong>Date:</strong> ${new Date(r.timestamp).toLocaleString()}</p>
-          </li>`;
-        });
-        html += '</ul>';
+
+      try {
+        const res = await fetch('/api/doctor/reports/' + encodeURIComponent(patientId));
+        const result = await res.json();
+        
+        if (!result.success) {
+          throw new Error(result.message);
+        }
+        
+        let html = '<h3>Reports for Patient ' + patientId + '</h3>';
+        
+        if (!result.data || result.data.length === 0) {
+          html += '<div class="report-item"><p>No reports found for this patient.</p></div>';
+        } else {
+          html += '<div class="report-list">';
+          result.data.forEach(r => {
+            html += `<div class="report-item">
+              <h4>${r.reportType}</h4>
+              <p><strong>Content:</strong> ${r.reportContent}</p>
+              <p><strong>Doctor ID:</strong> ${r.doctorId}</p>
+              <p><strong>Date:</strong> ${new Date(r.timestamp).toLocaleString()}</p>
+            </div>`;
+          });
+          html += '</div>';
+        }
+        document.getElementById('reports').innerHTML = html;
+      } catch (error) {
+        document.getElementById('reports').innerHTML = 
+          `<div class="report-item error-message">${error.message || 'Error fetching reports'}</div>`;
       }
-      document.getElementById('reports').innerHTML = html;
     };
   </script>
 </body>

@@ -393,16 +393,14 @@
       }
     });
 
-    const user = JSON.parse(sessionStorage.getItem('user') || '{}');
     document.getElementById('uploadForm').onsubmit = async function(e) {
       e.preventDefault();
       const form = e.target;
+
       const data = {
-        doctorId: user.id,
         patientId: form.patientId.value,
         reportType: form.reportType.value,
-        reportContent: form.reportContent.value,
-        timestamp: new Date().toISOString()
+        reportContent: form.reportContent.value
       };
 
       try {
@@ -414,17 +412,19 @@
           body: JSON.stringify(data)
         });
 
+        const result = await response.json();
         const messageDiv = document.getElementById('message');
-        if (response.ok) {
-          messageDiv.textContent = 'Report uploaded successfully!';
+        
+        if (result.success) {
+          messageDiv.textContent = result.message;
           messageDiv.className = 'success-message';
           form.reset();
         } else {
-          throw new Error('Upload failed');
+          throw new Error(result.message);
         }
       } catch (error) {
         const messageDiv = document.getElementById('message');
-        messageDiv.textContent = 'Error uploading report. Please try again.';
+        messageDiv.textContent = error.message || 'Error uploading report. Please try again.';
         messageDiv.className = 'error-message';
       }
     };
