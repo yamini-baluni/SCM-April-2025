@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Register - Medora</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+  <style>
+    :root {
+      --bg-deep-blue: #0F172A;
+      --gradient-purple: #6D28D9;
+      --gradient-blue: #2563EB;
+      --gradient-magenta: #C026D3;
+      --button-blue: #3B82F6;
+      --button-indigo: #6366F1;
+      --text-white: #FFFFFF;
+      --text-grey: #94A3B8;
+      --success-green: #4ade80;
+      --error-red: #ff6b6b;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: var(--bg-deep-blue);
+      color: var(--text-white);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      perspective: 1000px;
+      overflow: hidden;
+      background-image: 
+        radial-gradient(circle at 20% 20%, rgba(109, 40, 217, 0.15) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(37, 99, 235, 0.15) 0%, transparent 50%);
+    }
+
+    .floating-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      background: 
+        radial-gradient(circle at 20% 20%, rgba(109, 40, 217, 0.2) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(37, 99, 235, 0.2) 0%, transparent 50%);
+      animation: float 20s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translate(0, 0) rotate(0deg); }
+      25% { transform: translate(10px, 10px) rotate(1deg); }
+      50% { transform: translate(0, 20px) rotate(0deg); }
+      75% { transform: translate(-10px, 10px) rotate(-1deg); }
+    }
+
+    .register-container {
+      width: 100%;
+      max-width: 400px;
+      padding: 1.5rem;
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform 0.5s ease;
+    }
+
+    .register-container:hover {
+      transform: rotateY(5deg) rotateX(5deg);
+    }
+
+    .register-card {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      padding: 1.5rem;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      transform-style: preserve-3d;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .register-card::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(
+        45deg,
+        transparent,
+        rgba(255, 255, 255, 0.1),
+        transparent
+      );
+      transform: rotate(45deg);
+      animation: shine 3s infinite;
+    }
+
+    @keyframes shine {
+      0% { transform: translateX(-100%) rotate(45deg); }
+      100% { transform: translateX(100%) rotate(45deg); }
+    }
+
+    .register-card:hover {
+      transform: translateY(-5px) translateZ(20px);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+    }
+
+    .register-header {
+      text-align: center;
+      margin-bottom: 1.5rem;
+      transform-style: preserve-3d;
+    }
+
+    .register-header h1 {
+      font-size: 2.5rem;
+      font-weight: 600;
+      background: linear-gradient(135deg, var(--text-white), var(--text-grey));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      transform: translateZ(20px);
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+    }
+
+    .register-header p {
+      color: var(--text-grey);
+      margin-top: 0.5rem;
+      transform: translateZ(15px);
+      font-size: 1.1rem;
+    }
+
+    .form-group {
+      margin-bottom: 1rem;
+      position: relative;
+      transform-style: preserve-3d;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 0.3rem;
+      font-weight: 500;
+      color: var(--text-grey);
+      transform: translateZ(15px);
+      transition: all 0.3s ease;
+    }
+
+    .input-wrapper {
+      position: relative;
+      transform-style: preserve-3d;
+    }
+
+    .input-wrapper::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, rgba(255,255,255,0.1), transparent);
+      border-radius: 15px;
+      transform: translateZ(-5px);
+      transition: transform 0.3s ease;
+    }
+
+    .input-wrapper:hover::before {
+      transform: translateZ(-10px);
+    }
+
+    input, select {
+      width: 100%;
+      padding: 0.8rem;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 15px;
+      color: var(--text-white);
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      transform: translateZ(10px);
+    }
+
+    input:focus, select:focus {
+      outline: none;
+      border-color: var(--button-blue);
+      box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3);
+      background: rgba(255, 255, 255, 0.1);
+      transform: translateZ(15px);
+    }
+
+    .input-icon {
+      position: absolute;
+      right: 1rem;
+      top: 50%;
+      transform: translateY(-50%) translateZ(15px);
+      color: var(--text-grey);
+      pointer-events: none;
+      transition: all 0.3s ease;
+    }
+
+    .input-wrapper:hover .input-icon {
+      color: var(--button-blue);
+      transform: translateY(-50%) translateZ(15px) scale(1.2);
+    }
+
+    button {
+      background: linear-gradient(135deg, var(--button-blue), var(--button-indigo));
+      color: var(--text-white);
+      border: none;
+      padding: 0.8rem 2rem;
+      border-radius: 15px;
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+      width: 100%;
+      position: relative;
+      overflow: hidden;
+      transform: translateZ(20px);
+      margin-top: 0.5rem;
+    }
+
+    button::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, rgba(255,255,255,0.1), transparent);
+      transform: translateX(-100%);
+      transition: transform 0.3s ease;
+    }
+
+    button:hover {
+      transform: translateY(-2px) translateZ(25px);
+      box-shadow: 0 8px 25px rgba(59, 130, 246, 0.5);
+    }
+
+    button:hover::before {
+      transform: translateX(0);
+    }
+
+    #message {
+      margin-top: 1rem;
+      padding: 0.8rem;
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+      border-radius: 15px;
+      text-align: center;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      transform: translateZ(15px);
+      opacity: 0;
+      transform: translateY(-20px);
+      pointer-events: none;
+    }
+
+    .success-message {
+      color: var(--success-green);
+      border: 1px solid var(--success-green);
+      box-shadow: 0 0 15px rgba(74, 222, 128, 0.2);
+      animation: messageAppear 0.5s ease forwards;
+    }
+
+    .error-message {
+      color: var(--error-red);
+      border: 1px solid var(--error-red);
+      box-shadow: 0 0 15px rgba(255, 107, 107, 0.2);
+      animation: shake 0.5s ease forwards;
+    }
+
+    @keyframes messageAppear {
+      0% {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+      20%, 40%, 60%, 80% { transform: translateX(5px); }
+    }
+
+    .error-icon {
+      display: inline-block;
+      margin-right: 0.5rem;
+      animation: pulse 1s infinite;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.2); }
+      100% { transform: scale(1); }
+    }
+
+    .floating-elements {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    .floating-element {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      animation: floatElement 10s infinite ease-in-out;
+    }
+
+    @keyframes floatElement {
+      0%, 100% { transform: translate(0, 0) rotate(0deg); }
+      25% { transform: translate(50px, 50px) rotate(90deg); }
+      50% { transform: translate(0, 100px) rotate(180deg); }
+      75% { transform: translate(-50px, 50px) rotate(270deg); }
+    }
+
+    .particles {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    .particle {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      background: rgba(255, 255, 255, 0.5);
+      border-radius: 50%;
+      animation: particleFloat 15s infinite linear;
+    }
+
+    @keyframes particleFloat {
+      0% { transform: translateY(0) translateX(0); opacity: 0; }
+      50% { transform: translateY(-100px) translateX(50px); opacity: 1; }
+      100% { transform: translateY(-200px) translateX(0); opacity: 0; }
+    }
+
+    .back-link {
+      display: block;
+      text-align: center;
+      margin-top: 1rem;
+      color: var(--text-grey);
+      text-decoration: none;
+      transition: all 0.3s ease;
+      transform: translateZ(15px);
+    }
+
+    .back-link:hover {
+      color: var(--button-blue);
+      text-decoration: underline;
+    }
+
+    @media (max-width: 600px) {
+      .register-container {
+        padding: 1rem;
+      }
+      
+      .register-card {
+        padding: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="floating-bg"></div>
+  <div class="floating-elements">
+    <div class="floating-element" style="top: 10%; left: 10%; animation-delay: 0s;"></div>
+    <div class="floating-element" style="top: 20%; left: 80%; animation-delay: 2s;"></div>
+    <div class="floating-element" style="top: 50%; left: 20%; animation-delay: 4s;"></div>
+    <div class="floating-element" style="top: 70%; left: 70%; animation-delay: 6s;"></div>
+    <div class="floating-element" style="top: 30%; left: 50%; animation-delay: 8s;"></div>
+  </div>
+  <div class="particles" id="particles"></div>
+  <div class="register-container animate__animated animate__fadeIn">
+    <div class="register-card">
+      <div class="register-header">
+        <h1>Create Account</h1>
+        <p>Join Medora today</p>
+      </div>
+      <form id="registerForm">
+        <div class="form-group">
+          <label for="name">Full Name</label>
+          <div class="input-wrapper">
+            <input type="text" id="name" name="name" required placeholder="Enter your full name">
+            <span class="input-icon">👤</span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <div class="input-wrapper">
+            <input type="email" id="email" name="email" required placeholder="Enter your email">
+            <span class="input-icon">📧</span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <div class="input-wrapper">
+            <input type="password" id="password" name="password" required placeholder="Enter your password">
+            <span class="input-icon">🔒</span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="role">Role</label>
+          <div class="input-wrapper">
+            <select id="role" name="role" required>
+              <option value="">Select your role</option>
+              <option value="doctor">Doctor</option>
+              <option value="patient">Patient</option>
+            </select>
+            <span class="input-icon">👨‍⚕️</span>
+          </div>
+        </div>
+        <button type="submit">Register</button>
+      </form>
+      <div id="message"></div>
+      <a href="login.html" class="back-link">Already have an account? Login</a>
+    </div>
+  </div>
+  <script>
+    // Create particles
+    const particlesContainer = document.getElementById('particles');
+    for (let i = 0; i < 50; i++) {
+      const particle = document.createElement('div');
+      particle.className = 'particle';
+      particle.style.left = `${Math.random() * 100}%`;
+      particle.style.top = `${Math.random() * 100}%`;
+      particle.style.animationDelay = `${Math.random() * 15}s`;
+      particlesContainer.appendChild(particle);
+    }
+
+    document.getElementById('registerForm').onsubmit = async function(e) {
+      e.preventDefault();
+      const form = e.target;
+      const data = {
+        name: form.name.value,
+        email: form.email.value,
+        password: form.password.value,
+        role: form.role.value
+      };
+
+      try {
+        const response = await fetch('/api/register', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(data)
+        });
+
+        const messageDiv = document.getElementById('message');
+        if (response.ok) {
+          const result = await response.json();
+          messageDiv.textContent = 'Registration successful! Redirecting to login...';
+          messageDiv.className = 'success-message';
+          setTimeout(() => {
+            window.location.href = 'login.html';
+          }, 1500);
+        } else {
+          const error = await response.json();
+          throw new Error(error.message || 'Registration failed');
+        }
+      } catch (error) {
+        const messageDiv = document.getElementById('message');
+        messageDiv.innerHTML = `<span class="error-icon">⚠️</span> ${error.message}`;
+        messageDiv.className = 'error-message';
+        
+        // Add shake effect to the form
+        const registerCard = document.querySelector('.register-card');
+        registerCard.style.animation = 'shake 0.5s ease';
+        setTimeout(() => {
+          registerCard.style.animation = '';
+        }, 500);
+      }
+    };
+  </script>
+</body>
+</html>
